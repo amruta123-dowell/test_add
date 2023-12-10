@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:paytm_app/controller/pdf_controller.dart';
 
@@ -15,14 +16,17 @@ class PdfScreen extends GetView<PdfController> {
       appBar: AppBar(
         shadowColor: Colors.transparent,
         backgroundColor: Colors.white,
-        title: Text(
-          "PDF View",
-          style: Theme.of(context)
-              .primaryTextTheme
-              .bodyLarge
-              ?.copyWith(fontSize: 20, color: Colors.black),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        title: Align(
+          child: Text(
+            "PDF View",
+            style: Theme.of(context)
+                .primaryTextTheme
+                .bodyLarge
+                ?.copyWith(fontSize: 20, color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
       body: GetBuilder<PdfController>(builder: (controller) {
@@ -48,6 +52,9 @@ class PdfScreen extends GetView<PdfController> {
                       Image.asset(
                         "assets/pdf_icon.png",
                         fit: BoxFit.contain,
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       const Text(
                         "PDF file here",
