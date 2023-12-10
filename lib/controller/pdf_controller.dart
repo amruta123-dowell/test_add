@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,7 +28,7 @@ class PdfController extends GetxController {
 
       //get application directory
       String directory = await getPathToDownload();
-      print("the fileNAme ---> $fileName & the file path ---> $filePath");
+      print("the fileNAme ---> $fileName & the file path ---> $directory");
 
       //to download file
       final response = await Future.delayed(const Duration(milliseconds: 100))
@@ -47,7 +45,7 @@ class PdfController extends GetxController {
             "The file is downloaded successfully....",
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.green,
           duration: Duration(seconds: 2),
         ));
         update();
@@ -78,7 +76,19 @@ class PdfController extends GetxController {
   }
 
   void shareFile() async {
-    await Share.shareXFiles([XFile(filePath)]);
-    update();
+    try {
+      await Share.shareXFiles([XFile(filePath)]);
+      update();
+    } catch (e) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+        content: Text(
+          "The file is not downloaded. Please click on download button to download file",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ));
+      update();
+    }
   }
 }

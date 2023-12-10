@@ -6,6 +6,7 @@ import 'package:paytm_app/controller/pdf_controller.dart';
 // ignore: must_be_immutable
 class PdfScreen extends GetView<PdfController> {
   PdfScreen({super.key});
+  @override
   PdfController controller = Get.put(PdfController());
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class PdfScreen extends GetView<PdfController> {
             Expanded(
                 child: Container(
               width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
                 color: Colors.white,
