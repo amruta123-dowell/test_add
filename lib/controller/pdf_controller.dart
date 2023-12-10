@@ -31,7 +31,7 @@ class PdfController extends GetxController {
       print("the fileNAme ---> $fileName & the file path ---> $directory");
 
       //to download file
-      final response = await Future.delayed(const Duration(milliseconds: 100))
+      final response = await Future.delayed(const Duration(milliseconds: 50))
           .then((value) => http.get(Uri.parse(downloadUrl)));
 
       if (response.statusCode == 200) {
@@ -55,6 +55,7 @@ class PdfController extends GetxController {
     }
   }
 
+  ///download path function
   Future<String> getPathToDownload() async {
     String path = '';
     if (Platform.isAndroid) {
@@ -75,6 +76,7 @@ class PdfController extends GetxController {
     return path;
   }
 
+  ///To share file
   void shareFile() async {
     try {
       await Share.shareXFiles([XFile(filePath)]);
