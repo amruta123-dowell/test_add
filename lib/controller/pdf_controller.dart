@@ -15,11 +15,6 @@ class PdfController extends GetxController {
 
   String filePath = '';
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   Future<void> onClickDownload() async {
     try {
       String fileName = downloadUrl.split("/").last;
