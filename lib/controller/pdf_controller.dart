@@ -34,24 +34,25 @@ class PdfController extends GetxController {
       final response = await Future.delayed(const Duration(milliseconds: 50))
           .then((value) => http.get(Uri.parse(downloadUrl)));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode < 200 || response.statusCode > 400) {
+        showMessage("Something went wrong..", Colors.red);
+      } else {
         enableDownload = true;
         File file = File("$directory/$fileName");
         await file.writeAsBytes(response.bodyBytes);
         filePath = file.path;
 
-        ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
-          content: Text(
-            "The file is downloaded successfully....",
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ));
-        update();
+        showMessage("The file is downloaded successfully..", Colors.green);
       }
     } catch (error) {
-      print(error);
+      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+        content: Text(
+          "Unable to download.",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 2),
+      ));
     }
   }
 
@@ -64,8 +65,7 @@ class PdfController extends GetxController {
       if (!status.isGranted) {
         status = await Permission.storage.request();
         if (!status.isGranted) {
-          // Permission denied by user
-          throw Exception("Permission denied for storage");
+          showMessage("Please allow to download the file.", Colors.red);
         }
       }
 
@@ -82,15 +82,19 @@ class PdfController extends GetxController {
       await Share.shareXFiles([XFile(filePath)]);
       update();
     } catch (e) {
-      ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
-        content: Text(
-          "The file is not downloaded. Please click on download button to download file",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 2),
-      ));
-      update();
+      showMessage("The file is not downloaded yet. Please download the file.",
+          Colors.red);
     }
+  }
+
+  void showMessage(String message, Color color) {
+    ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      duration: const Duration(seconds: 2),
+    ));
   }
 }
